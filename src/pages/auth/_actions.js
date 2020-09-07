@@ -1,17 +1,23 @@
 import api from '../../services/api'
 
-export const authActions = {
-    signIn
-}
+export const signIn = (email, password) => {
+    return function (dispatch) {
+        const data = {
+            'email': email,
+            'senha': password
+        }
 
-function signIn() {
-    api.post('/users/login', {
-        'email': 'riicardofarias@gmail.com',
-        'senha': '123'
-    })
+        dispatch({ type: 'AUTH_REQUEST' })
+        
+        api.post('/users/login', data).then(({ data }) => {
+            const { token, usuario } = data;
 
-    return {
-        type: 'SIGN_IN',
-        user: {}
+            localStorage.setItem('token', token)
+            localStorage.setItem('user', JSON.stringify(usuario))
+            
+            dispatch({ type: 'AUTH_SUCCESS', user: usuario })
+        }).catch((e) => 
+            dispatch({ type: 'AUTH_ERROR' })
+        )
     }
 }

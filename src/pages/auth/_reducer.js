@@ -1,15 +1,34 @@
+const user = JSON.parse(localStorage.getItem('user')) || {};
+const token = localStorage.getItem('token')
+
 const inititalState = {
-    user: {}
+    user: user,
+    isLoggedIn: token ? true : false
 }
 
 export default (state = inititalState, action) => {
     switch(action.type){
-        case 'SIGN_IN': {
+        case 'AUTH_REQUEST': {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+
+        case 'AUTH_SUCCESS': {
             return {
                 ...state,
                 user: action.user,
-                loading: false,
-                errors: []
+                isLoggedIn: true,
+                isLoading: false
+            }
+        }
+
+        case 'AUTH_ERROR': {
+            return {
+                ...state,
+                isLoading: false,
+                error: action.error
             }
         }
 
