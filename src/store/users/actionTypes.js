@@ -1,0 +1,3 @@
+export const USER_REGISTER_REQUEST = 'users.REGISTER_REQUEST';
+export const USER_REGISTER_SUCCESS = 'users.REGISTER_SUCCESS';
+export const USER_REGISTER_ERROR   = 'users.REGISTER_ERROR';

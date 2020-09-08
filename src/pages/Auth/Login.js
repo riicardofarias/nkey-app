@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import * as authActions from './_actions';
-import { useHistory } from 'react-router-dom';
+import * as authActions from '../../store/auth/actions';
+import { NavLink, useHistory } from 'react-router-dom';
 
-const Login = ({ auth, signIn }) => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+const Login = ({ auth, login }) => {
+    const [ email, setEmail ] = useState('')
+    const [ password, setPassword ] = useState('')
     const history = useHistory()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        signIn(email, password)
+        login(email, password)
     }
 
     useEffect(() => {
-        if (auth.isLoggedIn) {
+        if (auth.isLoggedIn) 
             history.push('/')
-        }
-    }, [ auth.isLoggedIn ])
+    }, [auth.isLoggedIn, history])
 
     return (
         <div className="hero-body">
@@ -40,6 +39,12 @@ const Login = ({ auth, signIn }) => {
                                 </div>
                             </div>
 
+                            <div className="field">
+                                <div className="control">
+                                    <NavLink to="/register" className="has-text-centered">Criar conta</NavLink>
+                                </div>
+                            </div>
+
                             <div className="field mt-5">
                                 <div className="control">
                                     <button className={`button is-success is-fullwidth ${auth.isLoading ? 'is-loading' : ''}`}>Login</button>
@@ -58,7 +63,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    signIn: (email, password) => dispatch(authActions.signIn(email, password))
+    login: (email, password) => dispatch(authActions.login(email, password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

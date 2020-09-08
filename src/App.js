@@ -1,20 +1,38 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Routes from './routes';
-import { Provider } from 'react-redux'
-import store from './store'
+import { toast, ToastContainer } from 'react-toastify';
 
 import 'bulma/css/bulma.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Provider store={store}>
-          <Routes/>
-        </Provider>
-      </div>
-    );
-  }
+const App = () => {
+  const alert = useSelector(state => state.alert)
+
+  useEffect(() => {
+    const showToast = (alert) => {
+      const { message } = alert;
+
+      switch(alert.type){
+        case 'success': 
+          return toast.success(message)
+        case 'error': 
+          return toast.error(message)
+        default: 
+          return toast(message)
+      }
+    }
+
+    if(alert.message)
+      showToast(alert);
+    }, [ alert ])
+
+  return (
+    <div className="App">
+        <Routes/>
+        <ToastContainer/>
+    </div>
+  );
 }
 
 export default App;
