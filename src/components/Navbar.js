@@ -16,9 +16,9 @@ const Navbar = ({ isLoggedIn, logout }) => {
     return (
         <nav className="navbar is-success" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
-                <a className="navbar-item" href="/">
-                    Nkey
-                </a>
+                <Link className="navbar-item" to="/">
+                    Eventos
+                </Link>
             </div>
 
             <div className="navbar-end">

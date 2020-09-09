@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import EventListRow from './EventsListRow';
 import * as eventActions from '../../../store/events/actions';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
-const EventsListRow = ({ onDelete, events }) => {
+const EventsList = ({ events }) => {
+    const dispatch = useDispatch();
+
     const onDeleteEvent = (event) => {
-
+        dispatch(eventActions.deleteById(event.id)).then(() => {
+            toast.success('O evento foi removido com sucesso')
+        });
     }
 
     return (
@@ -20,18 +25,10 @@ const EventsListRow = ({ onDelete, events }) => {
             </thead>
 
             <tbody>
-                { events.map(event => <EventListRow key={ event.id } event={ event }/> )} 
+                { events.map(event => <EventListRow onDelete={onDeleteEvent} key={ event.id } event={ event }/> )} 
             </tbody>
         </table>
     )
 };
 
-const mapStateToProps = (state) => ({
-    isLoading: state.event.isLoading
-});
-
-const mapDispatchToProps = dispatch => ({
-    onDelete: (id) => dispatch(eventActions.deleteById(id))
-});
-
-export default EventsListRow;
+export default EventsList;

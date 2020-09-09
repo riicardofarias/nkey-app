@@ -49,11 +49,13 @@ export const update = (event) =>  dispatch => {
 
 export const deleteById = (id) =>  dispatch => {
     return new Promise((resolve, reject) => {
+        dispatch({ type: actionTypes.EVENT_DELETE, isLoading: true})
+
         apiEvent.deleteById(id).then(({ data }) => {
-            dispatch({ type: actionTypes.EVENT_DELETE })
+            dispatch({ type: actionTypes.EVENT_DELETE, isLoading: false, event: { id: id }})
             resolve(data)
         }).catch((err) => {
-            dispatch({ type: actionTypes.EVENT_DELETE })
+            dispatch({ type: actionTypes.EVENT_DELETE, isLoading: false })
             reject(err.response?.data)
         });
     });

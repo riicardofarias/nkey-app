@@ -1,10 +1,10 @@
-import React  from 'react';
+import React from 'react';
 import EventForm from './components/EventForm';
 import * as eventActions from '../../store/events/actions';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const AddEvent = ({ addEvent, event, isLoading }) => {
+const AddEvent = ({ addEvent, isLoading }) => {
 
     const onAddEvent = (data) => {
         addEvent(data).then(() => {
@@ -22,14 +22,13 @@ const AddEvent = ({ addEvent, event, isLoading }) => {
             </div>
 
             <div className="box my-5">
-                <EventForm event={ event } onSubmit={ (inputs) => onAddEvent(inputs) } isLoading={ isLoading }/>
+                <EventForm onSubmit={ (inputs) => onAddEvent(inputs) } isLoading={ isLoading }/>
             </div>
         </>
     );
 }
 
 const mapStateToProps = (state) => ({
-    event: state.event.event,
     isLoading: state.event.isLoading
 });
 

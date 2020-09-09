@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const EventRow = ({ event, onDelete }) => (
+const EventsListRow = ({ event, onDelete }) => (
     <tr>
         <td>{event.name}</td>
         <td>{event.formattedDate}</td>
         <td>{event.user.name}</td>
         
-        <td className="is-pulled-right">
+        <td className="has-text-right">
             <NavLink to={`/edit/${event.id}`} className="button mr-2">
                 Editar
             </NavLink>
@@ -19,4 +19,4 @@ const EventRow = ({ event, onDelete }) => (
     </tr>
 );
 
-export default EventRow;
+export default EventsListRow;

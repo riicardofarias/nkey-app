@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 const EventForm = ({ onSubmit, event, isLoading }) => {
-    const [ inputs, setInputs ] = useState(event || {
-        name: '',  date: ''
+    const [ inputs, setInputs ] = useState({
+        id: '', name: '', date: ''
     })
 
     useEffect(() => {
-        setInputs(event)
+        if(event) setInputs(event)
     }, [event])
 
     const handleSubmit = (e) => {
