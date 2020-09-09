@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import EventListRow from './EventsListRow';
 import * as eventActions from '../../../store/events/actions';
 import { useDispatch } from 'react-redux';

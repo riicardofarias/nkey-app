@@ -1,22 +1,42 @@
-import React, { useEffect }  from 'react';
-import EventForm from './components/EventForm';
+import React, { useEffect, useState }  from 'react';
 import * as eventActions from '../../store/events/actions';
 import { connect, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const AddEvent = ({ getEvent, update, event, isLoading, match }) => {
-    const id = useSelector(() => match.params.id)
+const EditEvent = ({ getEvent, update, event, isLoading, match }) => {
+    const initialState = {
+        id: '', name: '', date : ''
+    }
+
+    const [inputs, setInputs] = useState({ 
+        initialState 
+    })
+    
+    const id = useSelector(() => 
+        match.params.id
+    )
 
     useEffect(() => {
         getEvent(id)
     }, [getEvent, id]);
 
-    const onUpdateEvent = (event) => {
-        update(event).then(() => {
+    useEffect(() => {
+        console.log(event)
+        if(event) setInputs(event)
+    }, [event])
+
+    const onUpdateEvent = (e) => {
+        e.preventDefault();
+
+        update(inputs).then(() => {
             toast.success('O evento foi alterado com sucesso.')
         }).catch(err => {
             toast.error(err.message)
         })
+    }
+
+    const onChangeText = (e) => {
+        setInputs({...inputs, [e.target.name]: e.target.value})
     }
 
     return (
@@ -27,7 +47,27 @@ const AddEvent = ({ getEvent, update, event, isLoading, match }) => {
             </div>
 
             <div className="box my-5">
-                <EventForm event={ event } onSubmit={ (inputs) => onUpdateEvent(inputs) } isLoading={isLoading}/>
+                <form onSubmit={ onUpdateEvent }>
+                    <div className="field">
+                        <label className="label">Nome</label>
+                        <div className="control">
+                            <input className="input" name="name" value={ inputs.name } onChange={ onChangeText } type="text" placeholder="Nome do evento" required/>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <label className="label">Data</label>
+                        <div className="control">
+                            <input className="input" name="date" value={ inputs.date } onChange={ onChangeText } type="date" placeholder="Data do evento" required/>
+                        </div>
+                    </div>
+
+                    <div className="field mt-5">
+                        <div className="control">
+                            <button type="submit" className={`button is-success ${isLoading ? 'is-loading' : ''}`}>Salvar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </>
     );
@@ -43,4 +83,4 @@ const mapDispatchToProps = dispatch => ({
     update: (event) => dispatch(eventActions.update(event))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddEvent);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEvent);

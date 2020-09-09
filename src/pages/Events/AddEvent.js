@@ -1,17 +1,28 @@
-import React from 'react';
-import EventForm from './components/EventForm';
+import React, { useState } from 'react';
 import * as eventActions from '../../store/events/actions';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const AddEvent = ({ addEvent, isLoading }) => {
+    const initialState = {
+        name: '', date: ''
+    }
 
-    const onAddEvent = (data) => {
-        addEvent(data).then(() => {
+    const [event, setEvent] = useState(initialState)
+
+    const onSaveEvent = (e) => {
+        e.preventDefault();
+
+        addEvent(event).then(() => {
             toast.success('O evento foi cadastrado com sucesso.')
+            setEvent({...initialState})
         }).catch(e => e.map(err => 
             toast.error(err.message)
-        ))
+        ));
+    }
+
+    const onChangeText = (e) => {
+        setEvent({ ...event, [e.target.name]: e.target.value })
     }
 
     return (
@@ -22,7 +33,27 @@ const AddEvent = ({ addEvent, isLoading }) => {
             </div>
 
             <div className="box my-5">
-                <EventForm onSubmit={ (inputs) => onAddEvent(inputs) } isLoading={ isLoading }/>
+                <form onSubmit={ onSaveEvent }>
+                    <div className="field">
+                        <label className="label">Nome</label>
+                        <div className="control">
+                            <input className="input" name="name" value={ event.name } onChange={ onChangeText } type="text" placeholder="Nome do evento" required/>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <label className="label">Data</label>
+                        <div className="control">
+                            <input className="input" name="date" value={ event.date } onChange={ onChangeText } type="date" placeholder="Data do evento" required/>
+                        </div>
+                    </div>
+
+                    <div className="field mt-5">
+                        <div className="control">
+                            <button type="submit" className={`button is-success ${isLoading ? 'is-loading' : ''}`}>Salvar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </>
     );
